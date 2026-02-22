@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { GlobalLoadingProvider } from "@/providers/GlobalLoadingProvider";
-import NextTopLoader from 'nextjs-toploader';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -25,14 +23,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark">
+    <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-background text-foreground dark:bg-black dark:text-white`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <NextTopLoader showSpinner={false} />
-        <GlobalLoadingProvider>
-          {children}
-        </GlobalLoadingProvider>
+        {children}
       </body>
     </html>
   );
