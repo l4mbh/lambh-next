@@ -141,6 +141,23 @@
   }
 }
 
+@page {
+  /* Set the margins and hide headers/footers natively by the browser */
+  margin: 10mm;
+  size: auto;
+}
+
+@media print {
+
+  html,
+  body {
+    margin: 0;
+    padding: 0;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+}
+
 @layer components {
   .corner-border {
     position: relative;

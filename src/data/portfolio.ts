@@ -12,7 +12,12 @@ export const portfolioData = {
             company: "AI Dynamix",
             role: "Fullstack Developer",
             period: "12/2024 - 02/2025",
-            description: " An app to manage customer information, sim information, ... for Viettel sim selling kiosks.",
+            description: "An app to manage customer information, sim information, ... for Viettel sim selling kiosks.",
+            details: [
+                "Developed the frontend using React and React Admin for efficient data management.",
+                "Implemented secure RESTful APIs with Node.js and Express.",
+                "Managed database schema and operations using PostgreSQL."
+            ],
             technologies: ["React", "React Admin", "TypeScript", "Tailwind CSS", "Ant Design", "Node.js", "Express", "PostgreSQL", "RESTful APIs", "JWT"],
         },
         {
@@ -21,7 +26,12 @@ export const portfolioData = {
             role: "Fullstack Developer",
             period: "03/2025 - 09/2025",
             // Xây dựng hệ thống quản lý nhiêfu cấp từ tổng công ty đến nhầ phân phối, đến đại lý, các saleman và đến cửa hàng. Quản lý kho, quản lý sản phẩm, quản lý các chương trình khuyến mãi, ...
-            description: "Built a multi-level management system from the parent company to distributors, agents, salesmen, and stores. Manage inventory, products, promotions, ...",
+            description: "Built a multi-level management system from the parent company to distributors, agents, salesmen, and stores.",
+            details: [
+                "Designed and implemented complex multi-level user roles and permissions.",
+                "Developed robust inventory and product management modules.",
+                "Created a dynamic system to manage and track promotional campaigns."
+            ],
             technologies: ["Node.js", "Express", "PostgreSQL", "React", "NestJS", "TypeScript", "Tailwind CSS", "Ant Design", "RESTful APIs", "JWT", "Bcrypt"],
         },
     ],

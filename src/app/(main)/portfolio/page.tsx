@@ -1,16 +1,24 @@
+"use client";
+
 import { portfolioData } from "@/data/portfolio";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
-import { ArrowLeftRight, ArrowUpRight } from "lucide-react";
+import { ArrowLeftRight, ArrowUpRight, Printer } from "lucide-react";
 export default function PortfolioPage() {
     return (
-        <div className="container mx-auto p-6 md:p-12 lg:p-16 max-w-4xl space-y-24 animate-in fade-in duration-700">
+        <div className="container mx-auto p-6 md:p-12 lg:p-16 max-w-4xl space-y-24 animate-in fade-in duration-700 print:p-0 print:py-8 print:space-y-12 max-w-[850px]">
             {/* Header Section */}
             <section className="space-y-6">
-                <div>
-                    <h1 className="text-5xl md:text-7xl font-black tracking-tighter mb-4">{portfolioData.personal.name}</h1>
-                    <p className="text-xl md:text-2xl text-muted-foreground font-light">{portfolioData.personal.role}</p>
+                <div className="flex flex-col sm:flex-row justify-between items-start gap-4">
+                    <div>
+                        <h1 className="text-5xl md:text-7xl font-black tracking-tighter mb-4">{portfolioData.personal.name}</h1>
+                        <p className="text-xl md:text-2xl text-muted-foreground font-light">{portfolioData.personal.role}</p>
+                    </div>
+                    <Button variant="outline" onClick={() => window.print()} className="print:hidden w-full sm:w-auto shrink-0">
+                        <Printer className="mr-2 h-4 w-4" />
+                        Save as PDF
+                    </Button>
                 </div>
                 <div className="flex flex-col sm:flex-row gap-4 text-sm font-mono text-muted-foreground">
                     <span>{portfolioData.personal.email}</span>
@@ -39,9 +47,18 @@ export default function PortfolioPage() {
                                     <h3 className="text-xl font-semibold">{exp.role}</h3>
                                     <p className="text-primary font-medium">{exp.company}</p>
                                 </div>
-                                <p className="text-muted-foreground leading-relaxed">
-                                    {exp.description}
-                                </p>
+                                <div className="space-y-4">
+                                    <p className="text-muted-foreground leading-relaxed">
+                                        {exp.description}
+                                    </p>
+                                    {'details' in exp && exp.details && (
+                                        <ul className="list-disc list-inside space-y-2 text-muted-foreground ml-2">
+                                            {exp.details.map((detail, idx) => (
+                                                <li key={idx} className="leading-relaxed">{detail}</li>
+                                            ))}
+                                        </ul>
+                                    )}
+                                </div>
                                 <div className="flex flex-wrap gap-2 pt-2">
                                     {exp.technologies.map(tech => (
                                         <Badge key={tech} variant="secondary" className="px-2 py-0.5 rounded-sm">
@@ -91,11 +108,18 @@ export default function PortfolioPage() {
                             <div className="md:col-span-3">
                                 <h3 className="text-xl font-semibold">{activity.title}</h3>
                                 <p className="text-muted-foreground">{activity.description}</p>
-                                <a href={activity.data} target="_blank" rel="noopener noreferrer">
-                                    <Button variant="outline" size="sm" className="mt-4">
-                                        View <ArrowUpRight className="ml-2 h-4 w-4" />
-                                    </Button>
-                                </a>
+                                {activity.data && (
+                                    <div className="mt-4">
+                                        <a href={activity.data} target="_blank" rel="noopener noreferrer" className="print:hidden">
+                                            <Button variant="outline" size="sm">
+                                                View <ArrowUpRight className="ml-2 h-4 w-4" />
+                                            </Button>
+                                        </a>
+                                        <a href={activity.data} target="_blank" rel="noopener noreferrer" className="hidden print:block text-sm text-primary hover:underline mt-1 break-all">
+                                            {activity.data}
+                                        </a>
+                                    </div>
+                                )}
                             </div>
                         </div>
                     ))}

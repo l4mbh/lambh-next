@@ -12,15 +12,21 @@ export default async function MainLayout({
 
     return (
         <div className="flex min-h-screen flex-col relative w-full">
-            <Navbar session={session} />
-            <main className="flex-1 w-full flex flex-col pt-16">
+            <div className="print:hidden">
+                <Navbar session={session} />
+            </div>
+            <main className="flex-1 w-full flex flex-col pt-16 print:pt-0">
                 {/* pt-16 ensures content starts after the 4rem/64px navbar */}
-                <AppBreadcrumb className="w-full px-6 pt-6 max-w-7xl mx-auto" />
+                <div className="print:hidden">
+                    <AppBreadcrumb className="w-full px-6 pt-6 max-w-7xl mx-auto" />
+                </div>
                 <div className="w-full">
                     {children}
                 </div>
             </main>
-            <BackToTop />
+            <div className="print:hidden">
+                <BackToTop />
+            </div>
         </div>
     )
 }
