@@ -58,7 +58,7 @@ export default async function Home() {
                 </div>
                 <div className="flex gap-4">
                   <span className="text-zinc-600 select-none">4</span>
-                  <span className="ml-4"><span className="text-zinc-400">location:</span> <span className="text-yellow-300">'Vietnam'</span>,</span>
+                  <span className="ml-4"><span className="text-zinc-400">location:</span> <span className="text-yellow-300">'Ho Chi Minh City, Vietnam'</span>,</span>
                 </div>
                 <div className="flex gap-4">
                   <span className="text-zinc-600 select-none">5</span>
@@ -72,7 +72,7 @@ export default async function Home() {
                 </div>
                 <div className="flex gap-4">
                   <span className="text-zinc-600 select-none">7</span>
-                  <span className="ml-4"><span className="text-zinc-400">stack:</span> [<span className="text-yellow-300">'Next.js'</span>, <span className="text-yellow-300">'TypeScript'</span>, <span className="text-yellow-300">'Tailwind'</span>],</span>
+                  <span className="ml-4"><span className="text-zinc-400">stack:</span> [<span className="text-yellow-300">'Next.js'</span>, <span className="text-yellow-300">'TypeScript'</span>, <span className="text-yellow-300">'Tailwind'</span>, <span className="text-yellow-300">'PostgreSQL'</span>, <span className="text-yellow-300">'GIT'</span>, <span className="text-yellow-300">'Antd'</span>, <span className="text-yellow-300">'Shadcn/ui'</span>, <span className="text-yellow-300">'Express'</span>, <span className="text-yellow-300">'Node.js'</span>],</span>
                 </div>
                 <div className="flex gap-4">
                   <span className="text-zinc-600 select-none">8</span>
@@ -85,10 +85,17 @@ export default async function Home() {
               </div>
             </div>
 
-            <a href="#contact" className="group flex items-center gap-4 text-sm font-medium uppercase tracking-widest hover:text-primary transition-colors shrink-0">
-              <span className="w-12 h-[1px] bg-foreground group-hover:bg-primary transition-colors" />
-              Contact me
-            </a>
+            <div className="flex flex-col sm:flex-row items-center gap-6 mt-8 md:mt-0 shrink-0">
+              <Link href="/portfolio">
+                <Button variant="outline" className="border-border hover:bg-foreground hover:text-background transition-colors px-6 h-10 rounded-sm font-mono text-xs uppercase tracking-wider">
+                  View CV / Portfolio
+                </Button>
+              </Link>
+              <a href="#contact" className="group flex items-center gap-4 text-sm font-medium uppercase tracking-widest hover:text-primary transition-colors">
+                <span className="w-12 h-[1px] bg-foreground group-hover:bg-primary transition-colors" />
+                Contact me
+              </a>
+            </div>
           </div>
         </div>
       </section>
