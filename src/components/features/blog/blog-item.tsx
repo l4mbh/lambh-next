@@ -12,13 +12,42 @@ interface BlogItemProps {
 }
 
 export function BlogItem({ blog }: BlogItemProps) {
+    // Shared logic with NotionPageRenderer to appropriately route Notion-hosted images
+    const getCoverImageUrl = (url: string | null, blockId: string) => {
+        if (!url) return undefined;
+        if (url.startsWith("data:") || url.startsWith("http") && !url.includes("amazonaws.com") && !url.includes("secure.notion-static.com")) {
+            return url;
+        }
+
+        try {
+            const u = new URL(url.startsWith("https") ? url : `https://www.notion.so${url.startsWith("/") ? url : `/${url}`}`);
+            if (u.pathname.startsWith("/secure.notion-static.com") && u.hostname.endsWith(".amazonaws.com")) {
+                return `https://www.notion.so${u.pathname}?table=block&id=${blockId}&cache=v2`;
+            }
+        } catch (e) {
+            // Ignore invalid urls
+        }
+
+        if (url.startsWith("/images")) {
+            return `https://www.notion.so${url}`;
+        }
+
+        const urlObj = new URL('https://www.notion.so/image/' + encodeURIComponent(url));
+        urlObj.searchParams.set('table', 'block');
+        urlObj.searchParams.set('id', blockId);
+        urlObj.searchParams.set('cache', 'v2');
+        return urlObj.toString();
+    };
+
+    const imageUrl = getCoverImageUrl(blog.coverImage, blog.notionId);
+
     return (
         <Card className="flex flex-col bg-black h-full overflow-hidden transition-all hover:shadow-md hover:border-primary/50 group">
             {blog.coverImage ? (
                 <div className="relative w-full h-48 overflow-hidden bg-muted">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
-                        src={blog.coverImage}
+                        src={imageUrl}
                         alt={blog.title}
                         className="object-cover w-full h-full transition-transform duration-300 group-hover:scale-105"
                     />

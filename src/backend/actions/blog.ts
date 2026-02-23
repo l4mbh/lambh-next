@@ -1,7 +1,7 @@
 "use server"
 
 import { db } from "@/backend/db"
-import { notion } from "@/backend/controllers/notion"
+import { notion, getNotionPage } from "@/backend/controllers/notion"
 import { env } from "@/lib/env"
 import { auth } from "@/backend/auth"
 import slugify from 'slugify';
@@ -13,6 +13,24 @@ export async function getBlogs() {
     return db.blogPost.findMany({
         orderBy: { updatedAt: "desc" },
     })
+}
+
+/**
+ * Fetch a single blog post by slug along with its Notion RecordMap.
+ */
+export async function getBlogBySlug(slug: string) {
+    const blog = await db.blogPost.findUnique({
+        where: { slug }
+    })
+
+    if (!blog) return null;
+
+    const recordMap = await getNotionPage(blog.notionId)
+
+    return {
+        blog,
+        recordMap
+    }
 }
 
 
@@ -109,13 +127,21 @@ export async function syncBlogsFromNotion() {
             const publishedAtStr = pubAtProp?.date?.start || null;
             const publishedAt = publishedAtStr ? new Date(publishedAtStr) : null;
 
-            // Extract cover image
+            // Extract cover image (fallback to custom "Cover Image" property if native cover is empty)
             let coverImage = null;
             if (page.cover) {
                 if (page.cover.type === "external") {
                     coverImage = page.cover.external.url;
                 } else if (page.cover.type === "file") {
                     coverImage = page.cover.file.url;
+                }
+            } else {
+                const customCoverProp = properties["Cover Image"] || properties["cover image"] || properties["Cover image"] || properties["cover_image"];
+                if (customCoverProp?.type === 'url') {
+                    coverImage = customCoverProp.url;
+                } else if (customCoverProp?.type === 'files' && customCoverProp.files?.length > 0) {
+                    const file = customCoverProp.files[0];
+                    coverImage = file.type === 'external' ? file.external.url : file.file.url;
                 }
             }
 

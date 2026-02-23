@@ -1,0 +1,125 @@
+/* Notion Custom Styles targeting Dark Mode and minimalist aesthetic */
+.notion-wrapper .notion {
+    font-family: inherit;
+    font-size: 1.125rem;
+    line-height: 1.75;
+    color: var(--foreground);
+    background-color: transparent !important;
+}
+
+.notion-wrapper .notion-page {
+    padding: 0;
+    margin: 0;
+    max-width: none;
+    width: 100%;
+}
+
+.notion-wrapper .notion-text {
+    padding: 0.5rem 0;
+    color: #e5e5e5;
+}
+
+.notion-wrapper .notion-h1,
+.notion-wrapper .notion-h2,
+.notion-wrapper .notion-h3 {
+    font-family: inherit;
+    color: var(--foreground);
+    font-weight: 700;
+    margin-top: 2em;
+    margin-bottom: 1em;
+    letter-spacing: -0.025em;
+}
+
+.notion-wrapper .notion-h1 {
+    font-size: 2.25rem;
+}
+
+.notion-wrapper .notion-h2 {
+    font-size: 1.875rem;
+}
+
+.notion-wrapper .notion-h3 {
+    font-size: 1.5rem;
+}
+
+/* Links */
+.notion-wrapper .notion-a {
+    color: var(--primary);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: all 0.2s ease;
+}
+
+.notion-wrapper .notion-a:hover {
+    border-bottom-color: var(--primary);
+    opacity: 0.8;
+}
+
+/* Callouts */
+.notion-wrapper .notion-callout {
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    background-color: var(--card);
+    color: var(--card-foreground);
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    margin: 1.5rem 0;
+    padding: 1.5rem;
+}
+
+/* Code Blocks */
+.notion-wrapper .notion-code {
+    border-radius: var(--radius);
+    background-color: #1a1a1a !important;
+    border: 1px solid var(--border);
+    margin: 1.5rem 0;
+}
+
+/* Images */
+.notion-wrapper .notion-asset-wrapper {
+    margin: 2rem auto;
+    border-radius: var(--radius);
+    overflow: hidden;
+}
+
+.notion-wrapper .notion-asset-wrapper img {
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+}
+
+/* Blockquotes */
+.notion-wrapper .notion-quote {
+    border-left: 4px solid var(--primary);
+    padding: 0.5rem 1rem;
+    margin: 1.5rem 0;
+    color: var(--muted-foreground);
+    background: transparent;
+    font-style: italic;
+    font-size: 1.25rem;
+}
+
+/* Lists */
+.notion-wrapper .notion-list {
+    margin: 1rem 0;
+    padding-left: 1.5rem;
+}
+
+.notion-wrapper .notion-list-item {
+    padding: 0.25rem 0;
+    color: #e5e5e5;
+}
+
+/* HR */
+.notion-wrapper .notion-hr {
+    border-top: 1px solid var(--border);
+    margin: 2rem 0;
+}
+
+/* Inline Code */
+.notion-wrapper .notion-inline-code {
+    background-color: var(--secondary);
+    color: var(--secondary-foreground);
+    padding: 0.2em 0.4em;
+    border-radius: 0.25rem;
+    font-size: 0.875em;
+    font-family: var(--font-mono), monospace;
+}

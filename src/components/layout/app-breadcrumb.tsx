@@ -11,13 +11,17 @@ import {
     BreadcrumbPage,
     BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
+import { useBreadcrumbStore } from "@/store/breadcrumb-store"
 
 interface AppBreadcrumbProps {
     className?: string;
+    customLabels?: Record<string, string>;
 }
 
-export function AppBreadcrumb({ className }: AppBreadcrumbProps) {
+export function AppBreadcrumb({ className, customLabels: propCustomLabels }: AppBreadcrumbProps) {
     const pathname = usePathname()
+    const storeCustomLabels = useBreadcrumbStore((state) => state.customLabels);
+    const customLabels = { ...propCustomLabels, ...storeCustomLabels };
 
     // Ignore breadcrumb on exact home page to avoid redundancy
     if (pathname === "/") return null
@@ -39,10 +43,19 @@ export function AppBreadcrumb({ className }: AppBreadcrumbProps) {
                         const isLast = index === paths.length - 1
 
                         // Format the label neatly
-                        const label = path
+                        let label = path
                             .split('-')
                             .map(word => word.charAt(0).toUpperCase() + word.slice(1))
                             .join(' ')
+
+                        if (customLabels && customLabels[path]) {
+                            label = customLabels[path]
+                        }
+
+                        // Truncate long labels
+                        if (label.length > 30) {
+                            label = label.substring(0, 30) + "..."
+                        }
 
                         return (
                             <React.Fragment key={path}>
