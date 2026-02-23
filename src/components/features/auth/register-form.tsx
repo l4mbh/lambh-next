@@ -13,7 +13,10 @@ import {
     FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+import { registerAction } from "@/backend/actions/auth"
 import { useState } from "react"
+import { Loader2 } from "lucide-react"
+import { toast } from "sonner"
 
 const registerSchema = z.object({
     name: z.string().min(2, "Name must be at least 2 characters"),
@@ -43,13 +46,26 @@ export function RegisterForm() {
         setIsPending(true)
         setError(null)
 
-        // TODO: Implement register action
-        console.log("Register values:", values)
-        setIsPending(false)
+        const formData = new FormData()
+        formData.append("name", values.name)
+        formData.append("email", values.email)
+        formData.append("password", values.password)
+
+        const result = await registerAction(formData)
+
+        if (result?.error) {
+            setError(result.error)
+            toast.error(result.error)
+            setIsPending(false)
+            return
+        }
+        // If successful, registerAction auto-signs in and redirects
+        toast.success("Your account has been created successfully!")
     }
 
     return (
         <Form {...form}>
+
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                 <div className="space-y-4">
                     <FormField
@@ -113,7 +129,14 @@ export function RegisterForm() {
                 )}
 
                 <Button type="submit" className="w-full" disabled={isPending}>
-                    {isPending ? "Creating account..." : "Create account"}
+                    {isPending ? (
+                        <>
+                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                            Creating account...
+                        </>
+                    ) : (
+                        "Create account"
+                    )}
                 </Button>
             </form>
         </Form>

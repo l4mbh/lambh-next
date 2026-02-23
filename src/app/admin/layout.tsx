@@ -1,6 +1,13 @@
-import { Sidebar } from "@/components/layout/sidebar"
+import { Navbar } from "@/components/layout/navbar"
 import { auth } from "@/backend/auth"
 import { redirect } from "next/navigation"
+import type { Metadata } from "next"
+import { AppBreadcrumb } from "@/components/layout/app-breadcrumb"
+
+export const metadata: Metadata = {
+    title: "Admin Dashboard",
+    description: "Admin area for Next_Lambh.io.vn",
+}
 
 export default async function AdminLayout({
     children,
@@ -15,14 +22,15 @@ export default async function AdminLayout({
     }
 
     return (
-        <div className="flex h-screen overflow-hidden bg-background">
-            <Sidebar session={session} />
+        <div className="flex min-h-screen pt-16">
+            <Navbar session={session} />
             <main className="flex-1 w-full flex flex-col pt-16">
                 <header className="h-14 border-b border-border flex items-center px-6 shrink-0">
                     <h1 className="font-semibold text-sm">Administration Panel</h1>
                 </header>
 
-                <div className="flex-1 w-full overflow-y-auto p-6">
+                <div className="flex-1 w-full px-6 pt-6 pb-12">
+                    <AppBreadcrumb />
                     {children}
                 </div>
             </main>

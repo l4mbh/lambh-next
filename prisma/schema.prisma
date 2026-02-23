@@ -57,3 +57,17 @@ model VerificationToken {
 
   @@unique([identifier, token])
 }
+
+model BlogPost {
+  id          String   @id @default(cuid())
+  notionId    String   @unique
+  title       String
+  slug        String   @unique
+  description String?
+  coverImage  String?
+  tags        String[] @default([])
+  published   Boolean  @default(false)
+  publishedAt DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}

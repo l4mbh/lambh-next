@@ -16,6 +16,7 @@ import { Input } from "@/components/ui/input"
 import { loginAction } from "@/backend/actions/auth"
 import { useState } from "react"
 import { useRouter } from "next/navigation"
+import { Loader2 } from "lucide-react"
 
 const loginSchema = z.object({
     email: z.string().email(),
@@ -43,7 +44,7 @@ export function LoginForm() {
         const formData = new FormData()
         formData.append("email", values.email)
         formData.append("password", values.password)
-        formData.append("redirectTo", "/admin") // Redirect to admin by default after successful login
+        formData.append("redirectTo", "/") // Redirect to home after successful login
 
         const result = await loginAction(formData)
 
@@ -93,7 +94,14 @@ export function LoginForm() {
                 )}
 
                 <Button type="submit" className="w-full" disabled={isPending}>
-                    {isPending ? "Signing in..." : "Sign in"}
+                    {isPending ? (
+                        <>
+                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                            Signing in...
+                        </>
+                    ) : (
+                        "Sign in"
+                    )}
                 </Button>
             </form>
         </Form>

@@ -7,7 +7,7 @@ import { MonitorPlay, LayoutDashboard, FileText, Settings, Search } from "lucide
 import { UserNav } from "./user-nav"
 import type { Session } from "next-auth"
 
-export function Sidebar({ session }: { session: Session | null }) {
+export function Navbar({ session }: { session: Session | null }) {
     const pathname = usePathname()
 
     const navItems = [
@@ -17,6 +17,7 @@ export function Sidebar({ session }: { session: Session | null }) {
 
     const adminItems = [
         { icon: LayoutDashboard, label: "Admin", href: "/admin" },
+        { icon: FileText, label: "Blog Mgmt", href: "/admin/blogs" },
         { icon: Settings, label: "Settings", href: "/admin/settings" },
     ]
 
@@ -30,9 +31,9 @@ export function Sidebar({ session }: { session: Session | null }) {
     )
 
     return (
-        <header className="fixed inset-x-0 top-0 z-20 flex h-16 items-center justify-between border-b border-border bg-sidebar px-4 md:px-6">
+        <header className="fixed inset-x-0 top-0 z-20 flex h-16 items-center justify-between border-b border-border bg-background/80 backdrop-blur-md px-4 md:px-8">
             {/* Main Nav */}
-            <nav className="flex items-center gap-1 sm:gap-4">
+            <nav className="flex items-center gap-6 h-full">
                 {navItems.map((item) => {
                     const isActive = pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href))
                     return (
@@ -40,19 +41,23 @@ export function Sidebar({ session }: { session: Session | null }) {
                             key={item.href}
                             href={item.href}
                             title={item.label}
-                            className={`px-3 py-2 rounded-lg flex items-center gap-2 transition-colors ${isActive
-                                ? "bg-primary/10 text-primary"
-                                : "text-sidebar-foreground/60 hover:text-sidebar-foreground hover:bg-sidebar-accent"
+                            className={`relative flex items-center h-full text-sm font-medium transition-colors group ${isActive ? "text-foreground" : "text-muted-foreground hover:text-foreground"
                                 }`}
                         >
-                            <item.icon className="h-5 w-5 stroke-[1.5]" />
-                            <span className="text-sm font-medium hidden sm:inline-block">{item.label}</span>
+                            <span>{item.label}</span>
+                            {/* Active/Hover Indicator */}
+                            <span
+                                className={`absolute bottom-0 left-0 w-full h-[2px] bg-primary transition-transform duration-300 ease-out origin-left ${isActive ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
+                                    }`}
+                            />
                         </Link>
                     )
                 })}
 
                 {/* Divider */}
-                <div className="h-6 w-px bg-border mx-2" />
+                {session?.user.role === "ADMIN" && (
+                    <div className="h-4 w-px bg-border/50 mx-2" />
+                )}
 
                 {/* Admin Nav if authorized */}
                 {session?.user.role === "ADMIN" && adminItems.map((item) => {
@@ -62,13 +67,15 @@ export function Sidebar({ session }: { session: Session | null }) {
                             key={item.href}
                             href={item.href}
                             title={item.label}
-                            className={`px-3 py-2 rounded-lg flex items-center gap-2 transition-colors ${isActive
-                                ? "bg-primary/10 text-primary"
-                                : "text-sidebar-foreground/60 hover:text-sidebar-foreground hover:bg-sidebar-accent"
+                            className={`relative flex items-center h-full text-sm font-medium transition-colors group ${isActive ? "text-foreground" : "text-muted-foreground hover:text-foreground"
                                 }`}
                         >
-                            <item.icon className="h-5 w-5 stroke-[1.5]" />
-                            <span className="text-sm font-medium hidden md:inline-block">{item.label}</span>
+                            <span>{item.label}</span>
+                            {/* Active/Hover Indicator */}
+                            <span
+                                className={`absolute bottom-0 left-0 w-full h-[2px] bg-primary transition-transform duration-300 ease-out origin-left ${isActive ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
+                                    }`}
+                            />
                         </Link>
                     )
                 })}

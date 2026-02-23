@@ -1,5 +1,7 @@
-import { Sidebar } from "@/components/layout/sidebar"
+import { Navbar } from "@/components/layout/navbar"
 import { auth } from "@/backend/auth"
+import { AppBreadcrumb } from "@/components/layout/app-breadcrumb"
+import { BackToTop } from "@/components/layout/back-to-top"
 
 export default async function MainLayout({
     children,
@@ -9,14 +11,16 @@ export default async function MainLayout({
     const session = await auth()
 
     return (
-        <div className="flex h-screen overflow-hidden bg-background dark:bg-black">
-            <Sidebar session={session} />
+        <div className="flex min-h-screen flex-col relative w-full">
+            <Navbar session={session} />
             <main className="flex-1 w-full flex flex-col pt-16">
                 {/* pt-16 ensures content starts after the 4rem/64px navbar */}
-                <div className="h-full w-full overflow-y-auto overflow-x-hidden p-6">
+                <AppBreadcrumb className="w-full px-6 pt-6 max-w-7xl mx-auto" />
+                <div className="w-full">
                     {children}
                 </div>
             </main>
+            <BackToTop />
         </div>
     )
 }

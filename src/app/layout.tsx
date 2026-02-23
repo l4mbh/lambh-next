@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { GlobalLoadingProvider } from "@/providers/GlobalLoadingProvider";
 import NextTopLoader from 'nextjs-toploader';
+import { Toaster } from "@/components/ui/sonner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -25,7 +26,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark">
+    <html lang="en" className="dark scroll-pt-16 snap-y snap-proximity scroll-smooth">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-background text-foreground dark:bg-black dark:text-white`}
       >
@@ -33,6 +34,7 @@ export default function RootLayout({
         <GlobalLoadingProvider>
           {children}
         </GlobalLoadingProvider>
+        <Toaster richColors position="top-right" />
       </body>
     </html>
   );
