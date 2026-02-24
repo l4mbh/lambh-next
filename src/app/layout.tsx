@@ -16,8 +16,24 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "LamBH",
-  description: "LamBH",
+  title: {
+    default: "LamBH",
+    template: "%s | Lambh.io.vn",
+  },
+  description: "I build minimal, scalable interfaces and robust backends. Fullstack Engineer based in Ho Chi Minh City.",
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: "https://lambh.io.vn/",
+    title: "LamBH",
+    description: "I build minimal, scalable interfaces and robust backends. Fullstack Engineer based in Ho Chi Minh City.",
+    siteName: "LamBH",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "LamBH",
+    description: "I build minimal, scalable interfaces and robust backends. Fullstack Engineer based in Ho Chi Minh City.",
+  },
 };
 
 export default function RootLayout({

@@ -37,12 +37,28 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
             if (user) {
                 // user object is only passed in the first time on sign-in
                 token.role = user.role
+                token.email = user.email
             }
+
+            if (token.email) {
+                const dbUser = await db.user.findUnique({
+                    where: { email: token.email as string },
+                    select: { name: true, role: true }
+                })
+                if (dbUser) {
+                    token.name = dbUser.name
+                    token.role = dbUser.role
+                }
+            }
+
             return token
         },
         async session({ session, token }) {
             if (session.user && token) {
                 session.user.role = token.role as any
+                if (token.email) {
+                    session.user.email = token.email as string
+                }
             }
             return session
         }

@@ -2,11 +2,71 @@ import { getBlogBySlug } from "@/backend/actions/blog";
 import { NotionPageRenderer } from "@/components/features/blog/notion-page-renderer";
 import { BreadcrumbTitleUpdater } from "@/components/features/blog/breadcrumb-title-updater";
 import { notFound } from "next/navigation";
-import Link from "next/link";
 import { format } from "date-fns";
-import { ArrowLeft } from "lucide-react";
 
 import "react-notion-x/src/styles.css";
+import { Metadata } from "next";
+
+const getCoverImageUrl = (url: string | null, blockId: string) => {
+    if (!url) return undefined;
+    if (url.startsWith("data:") || url.startsWith("http") && !url.includes("amazonaws.com") && !url.includes("secure.notion-static.com")) {
+        return url;
+    }
+
+    try {
+        const u = new URL(url.startsWith("https") ? url : `https://www.notion.so${url.startsWith("/") ? url : `/${url}`}`);
+        if (u.pathname.startsWith("/secure.notion-static.com") && u.hostname.endsWith(".amazonaws.com")) {
+            return `https://www.notion.so${u.pathname}?table=block&id=${blockId}&cache=v2`;
+        }
+    } catch (e) {
+        // Ignore invalid urls
+    }
+
+    if (url.startsWith("/images")) {
+        return `https://www.notion.so${url}`;
+    }
+
+    const urlObj = new URL('https://www.notion.so/image/' + encodeURIComponent(url));
+    urlObj.searchParams.set('table', 'block');
+    urlObj.searchParams.set('id', blockId);
+    urlObj.searchParams.set('cache', 'v2');
+    return urlObj.toString();
+};
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+    const slug = (await params).slug;
+    const data = await getBlogBySlug(slug);
+
+    if (!data || !data.blog) {
+        return {
+            title: "Blog Post Not Found",
+            description: "The requested blog post could not be found.",
+        };
+    }
+
+    const blog = data.blog;
+    const imageUrl = getCoverImageUrl(blog.coverImage, blog.notionId);
+
+    return {
+        title: blog.title,
+        description: blog.description || `Read ${blog.title} on Lambh.io.vn`,
+        openGraph: {
+            title: blog.title,
+            description: blog.description || `Read ${blog.title} on Lambh.io.vn`,
+            url: `https://lambh.io.vn/blog/${slug}`,
+            type: "article",
+            publishedTime: blog.publishedAt ? new Date(blog.publishedAt).toISOString() : new Date(blog.createdAt).toISOString(),
+            authors: ["Lambh"],
+            images: imageUrl ? [{ url: imageUrl, alt: blog.title }] : [],
+        },
+        twitter: {
+            card: "summary_large_image",
+            title: blog.title,
+            description: blog.description || `Read ${blog.title} on Lambh.io.vn`,
+            images: imageUrl ? [imageUrl] : [],
+        },
+    };
+}
 
 export default async function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
     const slug = (await params).slug;
@@ -18,31 +78,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
     const { blog, recordMap } = data;
 
-    const getCoverImageUrl = (url: string | null, blockId: string) => {
-        if (!url) return undefined;
-        if (url.startsWith("data:") || url.startsWith("http") && !url.includes("amazonaws.com") && !url.includes("secure.notion-static.com")) {
-            return url;
-        }
 
-        try {
-            const u = new URL(url.startsWith("https") ? url : `https://www.notion.so${url.startsWith("/") ? url : `/${url}`}`);
-            if (u.pathname.startsWith("/secure.notion-static.com") && u.hostname.endsWith(".amazonaws.com")) {
-                return `https://www.notion.so${u.pathname}?table=block&id=${blockId}&cache=v2`;
-            }
-        } catch (e) {
-            // Ignore invalid urls
-        }
-
-        if (url.startsWith("/images")) {
-            return `https://www.notion.so${url}`;
-        }
-
-        const urlObj = new URL('https://www.notion.so/image/' + encodeURIComponent(url));
-        urlObj.searchParams.set('table', 'block');
-        urlObj.searchParams.set('id', blockId);
-        urlObj.searchParams.set('cache', 'v2');
-        return urlObj.toString();
-    };
 
     const imageUrl = getCoverImageUrl(blog.coverImage, blog.notionId);
 

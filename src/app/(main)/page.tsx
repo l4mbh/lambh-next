@@ -18,7 +18,7 @@ export default async function Home() {
 
       {/* Minimalist Hero */}
       <section className="w-full px-6 md:px-12 py-16 border-b border-border relative overflow-hidden min-h-[calc(100vh-4rem)] flex flex-col justify-center snap-start">
-        {/* Decorative background element for "phá cách" */}
+        {/* Decorative background element */}
         <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-primary/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3 pointer-events-none" />
 
         <div className="max-w-6xl mx-auto w-full relative z-10 flex flex-col">
