@@ -36,7 +36,7 @@ export function Footer() {
                                 <Github size={18} />
                                 <span className="sr-only">GitHub</span>
                             </Link>
-                            <Link href="https://facebook.com/lambh.1998" target="_blank" rel="noopener noreferrer" className="hover:text-blue-500 hover:-translate-y-1 transition-all duration-300">
+                            <Link href="https://facebook.com/buihoanglam.1998" target="_blank" rel="noopener noreferrer" className="hover:text-blue-500 hover:-translate-y-1 transition-all duration-300">
                                 <Facebook size={18} />
                                 <span className="sr-only">Facebook</span>
                             </Link>
