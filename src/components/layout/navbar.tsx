@@ -17,8 +17,6 @@ export function Navbar({ session }: { session: Session | null }) {
 
     const adminItems = [
         { icon: LayoutDashboard, label: "Admin", href: "/admin" },
-        { icon: FileText, label: "Blog Mgmt", href: "/admin/blogs" },
-        { icon: Settings, label: "Settings", href: "/admin/settings" },
     ]
 
     const BottomGroup = () => (

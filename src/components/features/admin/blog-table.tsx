@@ -66,10 +66,10 @@ export function BlogTable({ initialBlogs }: BlogTableProps) {
                     onClick={handleSync}
                     disabled={isSyncing}
                     variant="default"
-                    className="gap-2"
+                    iconPlacement="right"
+                    icon={<RefreshCw className={`h-4 w-4 ${isSyncing ? "animate-spin" : ""}`} />}
                 >
-                    <RefreshCw className={`h-4 w-4 ${isSyncing ? "animate-spin" : ""}`} />
-                    {isSyncing ? "Syncing..." : "Sync from Notion"}
+                    {isSyncing ? "Syncing..." : "Sync"}
                 </Button>
             </div>
 
