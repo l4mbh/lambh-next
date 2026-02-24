@@ -59,25 +59,28 @@ export function RegisterForm() {
             setIsPending(false)
             return
         }
-        // If successful, registerAction auto-signs in and redirects
-        toast.success("Your account has been created successfully!")
+        toast.success("Account created.")
     }
 
     return (
         <Form {...form}>
 
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                <div className="space-y-4">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+                <div className="space-y-6">
                     <FormField
                         control={form.control}
                         name="name"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>Full Name</FormLabel>
+                                <FormLabel className="text-xs uppercase tracking-widest text-zinc-500 font-medium">Full Name</FormLabel>
                                 <FormControl>
-                                    <Input placeholder="John Doe" {...field} disabled={isPending} />
+                                    <Input
+                                        placeholder="John Doe"
+                                        {...field}
+                                        disabled={isPending}
+                                    />
                                 </FormControl>
-                                <FormMessage />
+                                <FormMessage className="text-xs" />
                             </FormItem>
                         )}
                     />
@@ -86,11 +89,15 @@ export function RegisterForm() {
                         name="email"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>Email</FormLabel>
+                                <FormLabel className="text-xs uppercase tracking-widest text-zinc-500 font-medium">Email</FormLabel>
                                 <FormControl>
-                                    <Input placeholder="you@example.com" {...field} disabled={isPending} />
+                                    <Input
+                                        placeholder="you@example.com"
+                                        {...field}
+                                        disabled={isPending}
+                                    />
                                 </FormControl>
-                                <FormMessage />
+                                <FormMessage className="text-xs" />
                             </FormItem>
                         )}
                     />
@@ -99,11 +106,16 @@ export function RegisterForm() {
                         name="password"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>Password</FormLabel>
+                                <FormLabel className="text-xs uppercase tracking-widest text-zinc-500 font-medium">Password</FormLabel>
                                 <FormControl>
-                                    <Input type="password" placeholder="••••••••" {...field} disabled={isPending} />
+                                    <Input
+                                        type="password"
+                                        placeholder="••••••••"
+                                        {...field}
+                                        disabled={isPending}
+                                    />
                                 </FormControl>
-                                <FormMessage />
+                                <FormMessage className="text-xs" />
                             </FormItem>
                         )}
                     />
@@ -112,31 +124,33 @@ export function RegisterForm() {
                         name="confirmPassword"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>Confirm Password</FormLabel>
+                                <FormLabel className="text-xs uppercase tracking-widest text-zinc-500 font-medium">Confirm Password</FormLabel>
                                 <FormControl>
-                                    <Input type="password" placeholder="••••••••" {...field} disabled={isPending} />
+                                    <Input
+                                        type="password"
+                                        placeholder="••••••••"
+                                        {...field}
+                                        disabled={isPending}
+                                    />
                                 </FormControl>
-                                <FormMessage />
+                                <FormMessage className="text-xs" />
                             </FormItem>
                         )}
                     />
                 </div>
 
                 {error && (
-                    <div className="bg-destructive/15 text-destructive text-sm p-3 rounded-md">
+                    <div className="bg-red-500/10 border border-red-500/20 text-red-400 text-xs p-4 rounded-sm">
                         {error}
                     </div>
                 )}
 
-                <Button type="submit" className="w-full" disabled={isPending}>
-                    {isPending ? (
-                        <>
-                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                            Creating account...
-                        </>
-                    ) : (
-                        "Create account"
-                    )}
+                <Button
+                    type="submit"
+                    className="w-full mt-4"
+                    isLoading={isPending}
+                >
+                    Create Account
                 </Button>
             </form>
         </Form>

@@ -2,6 +2,8 @@
 
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { Copy, Mail, ArrowLeft, Send } from "lucide-react";
 import { toast } from "sonner";
 
@@ -59,10 +61,11 @@ export function ContactSection({ email }: ContactSectionProps) {
                             </a>
                             <Button
                                 variant="postItem"
-                                className="!bg-white !text-black hover:!bg-neutral-200 transition-colors h-14 px-8 text-base border-none w-full sm:w-auto"
+                                className="w-full sm:w-auto"
                                 onClick={() => setShowForm(true)}
+                                icon={<Mail size={16} />}
                             >
-                                <Mail className="mr-2" size={18} /> Direct Message
+                                Direct Message
                             </Button>
                         </div>
                     </div>
@@ -85,49 +88,40 @@ export function ContactSection({ email }: ContactSectionProps) {
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                                 <div className="space-y-2">
                                     <label className="text-xs uppercase tracking-widest text-zinc-500 font-semibold block">Your Name</label>
-                                    <input
+                                    <Input
                                         required
                                         type="text"
-                                        className="w-full bg-zinc-900/50 border border-zinc-800 focus:border-white focus:ring-1 focus:ring-white rounded-none px-4 py-3 outline-none text-white transition-colors"
                                         placeholder="John Doe"
                                     />
                                 </div>
                                 <div className="space-y-2">
                                     <label className="text-xs uppercase tracking-widest text-zinc-500 font-semibold block">Your Email</label>
-                                    <input
+                                    <Input
                                         required
                                         type="email"
-                                        className="w-full bg-zinc-900/50 border border-zinc-800 focus:border-white focus:ring-1 focus:ring-white rounded-none px-4 py-3 outline-none text-white transition-colors"
                                         placeholder="john@example.com"
                                     />
                                 </div>
                             </div>
                             <div className="space-y-2">
                                 <label className="text-xs uppercase tracking-widest text-zinc-500 font-semibold block">Message</label>
-                                <textarea
+                                <Textarea
                                     required
                                     rows={5}
-                                    className="w-full bg-zinc-900/50 border border-zinc-800 focus:border-white focus:ring-1 focus:ring-white rounded-none px-4 py-3 outline-none text-white transition-colors resize-none"
+                                    className="resize-none"
                                     placeholder="Hello Lam, I'd like to work with you on..."
                                 />
                             </div>
 
                             <Button
                                 type="submit"
-                                disabled={isSubmitting}
                                 variant="postItem"
-                                className="w-full !bg-white !text-black hover:!bg-neutral-200 transition-colors mt-4 relative overflow-hidden border-none"
+                                className="w-full mt-4"
+                                isLoading={isSubmitting}
+                                icon={<Send size={16} />}
+                                iconPlacement="right"
                             >
-                                {isSubmitting ? (
-                                    <span className="flex items-center gap-2 font-bold tracking-widest">
-                                        <div className="w-4 h-4 border-2 border-black border-t-transparent rounded-full animate-spin" />
-                                        SENDING...
-                                    </span>
-                                ) : (
-                                    <span className="flex items-center gap-2 font-bold tracking-widest">
-                                        SEND MESSAGE <Send size={16} />
-                                    </span>
-                                )}
+                                SEND MESSAGE
                             </Button>
                         </form>
                     </div>

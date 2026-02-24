@@ -2,7 +2,7 @@ import { getBlogs } from "@/backend/actions/blog";
 import { BlogItem } from "@/components/features/blog/blog-item";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowRight, ArrowUpRight } from "lucide-react";
 import type { BlogPost } from "@prisma/client";
 import { ContactSection } from "@/components/features/home/contact-section";
 
@@ -31,6 +31,13 @@ export default async function Home() {
               interfaces.
             </span>
           </h1>
+          <div className="flex items-center gap-4 mb-8">
+            <div className="h-[1px] w-12 bg-gradient-to-r from-foreground to-transparent" />
+            <p className="text-sm uppercase tracking-[0.1em] text-muted-foreground">
+              minimalism is not about having less, it's about making room for more of what matters
+            </p>
+          </div>
+
 
           <div className="flex flex-col lg:flex-row items-start lg:items-end justify-between gap-12 mt-12 md:mt-24">
             {/* Terminal / Code Editor Profile Section */}
@@ -87,8 +94,13 @@ export default async function Home() {
 
             <div className="flex flex-col sm:flex-row items-center gap-6 mt-8 md:mt-0 shrink-0">
               <Link href="/portfolio">
-                <Button variant="outline" className="border-border hover:bg-foreground hover:text-background transition-colors px-6 h-10 rounded-sm font-mono text-xs uppercase tracking-wider">
-                  View CV / Portfolio
+                <Button
+                  variant="outline"
+                  className="border-border hover:bg-foreground hover:text-background transition-colors px-6 h-10 rounded-sm text-xs uppercase tracking-wider"
+                  icon={<ArrowRight className="w-4 h-4" />}
+                  iconPlacement="right"
+                >
+                  More about me
                 </Button>
               </Link>
               <a href="#contact" className="group flex items-center gap-4 text-sm font-medium uppercase tracking-widest hover:text-primary transition-colors">

@@ -33,12 +33,12 @@ export function UserNav({ session }: UserNavProps) {
     const initials = user.email ? user.email.substring(0, 2).toUpperCase() : "AD"
 
     return (
-        <DropdownMenu>
+        <DropdownMenu modal={false}>
             <DropdownMenuTrigger asChild>
-                <Button variant="default" className="relative h-8 w-8 rounded-full">
+                <Button variant="ghost" size="icon" className="relative h-8 w-8 rounded-full p-0">
                     <Avatar className="h-8 w-8">
                         <AvatarImage src={user.image ?? ""} alt={user.name ?? "User"} />
-                        <AvatarFallback className="bg-primary text-primary-foreground">
+                        <AvatarFallback className="bg-primary text-primary-foreground font-bold">
                             {initials}
                         </AvatarFallback>
                     </Avatar>
@@ -57,13 +57,17 @@ export function UserNav({ session }: UserNavProps) {
                     </div>
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuGroup>
-                    <DropdownMenuItem onClick={() => window.location.href = '/admin'}>
-                        <User className="mr-2 h-4 w-4" />
-                        <span>Dashboard</span>
-                    </DropdownMenuItem>
-                </DropdownMenuGroup>
-                <DropdownMenuSeparator />
+                {user.role === 'ADMIN' && (
+                    <>
+                        <DropdownMenuGroup>
+                            <DropdownMenuItem onClick={() => window.location.href = '/admin'}>
+                                <User className="mr-2 h-4 w-4" />
+                                <span>Dashboard</span>
+                            </DropdownMenuItem>
+                        </DropdownMenuGroup>
+                        <DropdownMenuSeparator />
+                    </>
+                )}
                 <DropdownMenuItem onClick={() => logoutAction()}>
                     <LogOut className="mr-2 h-4 w-4" />
                     <span>Log out</span>

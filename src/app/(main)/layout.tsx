@@ -2,6 +2,7 @@ import { Navbar } from "@/components/layout/navbar"
 import { auth } from "@/backend/auth"
 import { AppBreadcrumb } from "@/components/layout/app-breadcrumb"
 import { BackToTop } from "@/components/layout/back-to-top"
+import { Footer } from "@/components/layout/footer"
 
 export default async function MainLayout({
     children,
@@ -24,6 +25,9 @@ export default async function MainLayout({
                     {children}
                 </div>
             </main>
+            <div className="print:hidden">
+                <Footer />
+            </div>
             <div className="print:hidden">
                 <BackToTop />
             </div>

@@ -40,11 +40,10 @@ export function LoginForm() {
         setIsPending(true)
         setError(null)
 
-        // Convert to FormData for the server action
         const formData = new FormData()
         formData.append("email", values.email)
         formData.append("password", values.password)
-        formData.append("redirectTo", "/") // Redirect to home after successful login
+        formData.append("redirectTo", "/")
 
         const result = await loginAction(formData)
 
@@ -52,23 +51,26 @@ export function LoginForm() {
             setError(result.error)
             setIsPending(false)
         }
-        // If successful, NextAuth will automatically throw a NEXT_REDIRECT, so no need for router.push here if redirectTo is passed
     }
 
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                <div className="space-y-4">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+                <div className="space-y-6">
                     <FormField
                         control={form.control}
                         name="email"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>Email</FormLabel>
+                                <FormLabel className="text-xs uppercase tracking-widest text-zinc-500 font-medium">Email</FormLabel>
                                 <FormControl>
-                                    <Input placeholder="admin@lambh.io.vn" {...field} disabled={isPending} />
+                                    <Input
+                                        placeholder="admin@lambh.io.vn"
+                                        {...field}
+                                        disabled={isPending}
+                                    />
                                 </FormControl>
-                                <FormMessage />
+                                <FormMessage className="text-xs" />
                             </FormItem>
                         )}
                     />
@@ -77,31 +79,33 @@ export function LoginForm() {
                         name="password"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>Password</FormLabel>
+                                <FormLabel className="text-xs uppercase tracking-widest text-zinc-500 font-medium">Password</FormLabel>
                                 <FormControl>
-                                    <Input type="password" placeholder="••••••••" {...field} disabled={isPending} />
+                                    <Input
+                                        type="password"
+                                        placeholder="••••••••"
+                                        {...field}
+                                        disabled={isPending}
+                                    />
                                 </FormControl>
-                                <FormMessage />
+                                <FormMessage className="text-xs" />
                             </FormItem>
                         )}
                     />
                 </div>
 
                 {error && (
-                    <div className="bg-destructive/15 text-destructive text-sm p-3 rounded-md">
+                    <div className="bg-red-500/10 border border-red-500/20 text-red-400 text-xs p-4 rounded-sm">
                         {error}
                     </div>
                 )}
 
-                <Button type="submit" className="w-full" disabled={isPending}>
-                    {isPending ? (
-                        <>
-                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                            Signing in...
-                        </>
-                    ) : (
-                        "Sign in"
-                    )}
+                <Button
+                    type="submit"
+                    className="w-full mt-4"
+                    isLoading={isPending}
+                >
+                    Proceed
                 </Button>
             </form>
         </Form>
