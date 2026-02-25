@@ -6,13 +6,83 @@ import { env } from "@/lib/env"
 import { auth } from "@/backend/auth"
 import slugify from 'slugify';
 
+export interface GetBlogsParams {
+    page?: number;
+    limit?: number;
+    search?: string;
+    tag?: string;
+    fromDate?: string;
+    publishedOnly?: boolean;
+}
+
 /**
- * Fetch all blog posts from the database.
+ * Fetch blog posts from the database with filtering and pagination.
  */
-export async function getBlogs() {
-    return db.blogPost.findMany({
-        orderBy: { updatedAt: "desc" },
-    })
+export async function getBlogs(params?: GetBlogsParams) {
+    const {
+        page = 1,
+        limit = 9,
+        search,
+        tag,
+        fromDate,
+        publishedOnly = true
+    } = params || {};
+
+    const skip = (page - 1) * limit;
+
+    const where: any = {};
+
+    if (publishedOnly) {
+        where.published = true;
+    }
+
+    if (search) {
+        where.OR = [
+            { title: { contains: search, mode: 'insensitive' } },
+            { description: { contains: search, mode: 'insensitive' } }
+        ];
+    }
+
+    if (tag) {
+        where.tags = { has: tag };
+    }
+
+    if (fromDate) {
+        where.publishedAt = { gte: new Date(fromDate) };
+    }
+
+    // Run count and query in parallel
+    const [total, posts] = await Promise.all([
+        db.blogPost.count({ where }),
+        db.blogPost.findMany({
+            where,
+            skip,
+            take: limit,
+            orderBy: {
+                publishedAt: 'desc'
+            }
+        })
+    ]);
+
+    // Also get all unique tags from published posts to show in the filter UI
+    // Prisma currently doesn't support distinct on array fields directly, so we fetch all tags
+    // and process them natively (or just let the Client component do it like before if we prefer,
+    // but the Client component only gets the paginated subset now)
+    // Actually, we should fetch all unique tags across the WHOLE database
+    const allBlogsTags = await db.blogPost.findMany({
+        where: publishedOnly ? { published: true } : {},
+        select: { tags: true }
+    });
+
+    const uniqueTags = Array.from(new Set(allBlogsTags.flatMap(b => b.tags))).sort();
+
+    return {
+        posts,
+        total,
+        totalPages: Math.ceil(total / limit),
+        currentPage: page,
+        allTags: uniqueTags
+    };
 }
 
 /**

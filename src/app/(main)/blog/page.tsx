@@ -1,25 +1,43 @@
-import { getBlogs } from "@/backend/actions/blog"
+import { getBlogs, GetBlogsParams } from "@/backend/actions/blog"
 import { BlogList } from "@/components/features/blog/blog-list"
 
-export default async function BlogPage() {
-    // Fetch blogs from PostgreSQL database
-    const blogs = await getBlogs()
+export default async function BlogPage({
+    searchParams
+}: {
+    searchParams: Promise<{ [key: string]: string | string[] | undefined }>
+}) {
+    const params = await searchParams;
 
-    // Filter only published blogs for the public facing page
-    const publishedBlogs = blogs.filter((blog: any) => blog.published)
+    // Parse URL params for the backend query
+    const page = typeof params.page === 'string' ? parseInt(params.page, 10) : 1;
+    const limit = 9; // Number of posts per page
+    const search = typeof params.q === 'string' ? params.q : undefined;
+    const tag = typeof params.tag === 'string' ? params.tag : undefined;
+    const fromDate = typeof params.from === 'string' ? params.from : undefined;
+
+    const queryParams: GetBlogsParams = {
+        page: isNaN(page) || page < 1 ? 1 : page,
+        limit,
+        search,
+        tag,
+        fromDate,
+        publishedOnly: true
+    };
+
+    // Fetch filtered and paginated blogs from PostgreSQL database
+    const result = await getBlogs(queryParams);
+
+    // We no longer need to filter `published`, as the query does this
 
     return (
         <div className="container mx-auto p-4 lg:p-8 space-y-8 max-w-7xl">
-            <div className="flex flex-col items-start gap-4 md:flex-row md:justify-between md:items-center">
-                <div>
-                    <h1 className="text-3xl font-bold tracking-tight">Here i share what i think</h1>
-                    <p className="text-muted-foreground mt-2">
-                        I share my thoughts about technology, life, and everything in between.
-                    </p>
-                </div>
-            </div>
 
-            <BlogList blogs={publishedBlogs} />
+            <BlogList
+                blogs={result.posts}
+                allTags={result.allTags}
+                totalPages={result.totalPages}
+                currentPage={result.currentPage}
+            />
         </div>
     )
 }

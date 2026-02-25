@@ -52,10 +52,10 @@ export default function LoginPage() {
                 <div className="w-full animate-in fade-in slide-in-from-bottom-4 duration-700">
                     <div className="mb-12 text-center">
                         <h1 className="text-4xl md:text-5xl font-black tracking-tighter mb-4">
-                            {activeTab === "login" ? "Welcome Back." : "Join Us."}
+                            {activeTab === "login" ? "Hi there." : "Join me."}
                         </h1>
                         <p className="text-zinc-500 font-mono text-xs uppercase tracking-widest">
-                            {activeTab === "login" ? "Authenticate to continue" : "Setup your new account"}
+                            {activeTab === "login" ? "Authenticate to continue" : "Setup your new account. Let me know you better."}
                         </p>
                     </div>
 

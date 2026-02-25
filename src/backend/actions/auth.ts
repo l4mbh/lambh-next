@@ -3,8 +3,18 @@
 import { signIn, signOut } from "@/backend/auth"
 import { UserModel } from "@/backend/models/user.model"
 import { AuthError } from "next-auth"
+import { checkRateLimit, limiters } from "@/lib/rate-limit"
+import { headers } from "next/headers"
 
 export async function loginAction(formData: FormData) {
+    const headerList = await headers()
+    const ip = headerList.get("x-forwarded-for") ?? "127.0.0.1"
+    const { success } = await checkRateLimit(ip, limiters.auth)
+
+    if (!success) {
+        return { error: "Rate limit exceeded. Please try again later." }
+    }
+
     try {
         await signIn("credentials", formData)
     } catch (error) {
@@ -21,6 +31,14 @@ export async function loginAction(formData: FormData) {
 }
 
 export async function registerAction(formData: FormData) {
+    const headerList = await headers()
+    const ip = headerList.get("x-forwarded-for") ?? "127.0.0.1"
+    const { success } = await checkRateLimit(ip, limiters.auth)
+
+    if (!success) {
+        return { error: "Rate limit exceeded. Please try again later." }
+    }
+
     const name = formData.get("name") as string
     const email = formData.get("email") as string
     const password = formData.get("password") as string

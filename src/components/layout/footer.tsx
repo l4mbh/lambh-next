@@ -8,6 +8,12 @@ import Link from 'next/link';
 export function Footer() {
     const email = "lambh.1998@gmail.com";
 
+    const [year, setYear] = React.useState<number | null>(null);
+
+    React.useEffect(() => {
+        setYear(new Date().getFullYear());
+    }, []);
+
     const handleCopy = () => {
         navigator.clipboard.writeText(email);
         toast.success("Email copied to clipboard!");
@@ -18,7 +24,7 @@ export function Footer() {
             <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6 relative">
                 <div className="flex flex-col md:flex-row items-center gap-4 text-sm text-muted-foreground w-full justify-between">
                     <p className="font-mono text-xs uppercase tracking-wider">
-                        © {new Date().getFullYear()} LamBH. All rights reserved.
+                        © {year ?? "2024"} LamBH. All rights reserved.
                     </p>
 
                     <div className="flex items-center gap-6 mt-4 md:mt-0">

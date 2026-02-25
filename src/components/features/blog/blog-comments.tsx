@@ -8,6 +8,7 @@ import { CommentItem, CommentData } from "./comment-item";
 import { Loader2, MessageSquare } from "lucide-react";
 import { toast } from "sonner";
 import Link from "next/link";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface BlogCommentsProps {
     slug: string;
@@ -141,8 +142,19 @@ export function BlogComments({ slug }: BlogCommentsProps) {
 
             {/* Comments List */}
             {isLoading ? (
-                <div className="flex justify-center py-12">
-                    <Loader2 className="w-6 h-6 animate-spin text-muted-foreground" />
+                <div className="space-y-6">
+                    {[1, 2, 3].map((i) => (
+                        <div key={i} className="flex gap-4 p-4 rounded-xl items-start bg-secondary/10">
+                            <Skeleton className="w-10 h-10 rounded-full bg-zinc-900 border border-zinc-800" />
+                            <div className="flex-1 space-y-2">
+                                <div className="flex items-center gap-2">
+                                    <Skeleton className="w-24 h-4 bg-zinc-900" />
+                                    <Skeleton className="w-16 h-3 bg-zinc-900" />
+                                </div>
+                                <Skeleton className="w-full h-12 bg-zinc-900" />
+                            </div>
+                        </div>
+                    ))}
                 </div>
             ) : comments.length > 0 ? (
                 <div className="space-y-6">

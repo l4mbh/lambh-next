@@ -12,6 +12,10 @@ const envSchema = z.object({
     // Notion Integration
     NOTION_API_KEY: z.string().optional(),
     NOTION_DATABASE_ID: z.string().optional(),
+
+    // Upstash Redis configuration
+    UPSTASH_REDIS_REST_URL: z.string().url().optional(),
+    UPSTASH_REDIS_REST_TOKEN: z.string().optional(),
 });
 
 // The parsed and validated environment.
@@ -23,4 +27,6 @@ export const env = envSchema.parse({
     NEXTAUTH_URL: process.env.NEXTAUTH_URL,
     NOTION_API_KEY: process.env.NOTION_API_KEY,
     NOTION_DATABASE_ID: process.env.NOTION_DATABASE_ID,
+    UPSTASH_REDIS_REST_URL: process.env.UPSTASH_REDIS_REST_URL,
+    UPSTASH_REDIS_REST_TOKEN: process.env.UPSTASH_REDIS_REST_TOKEN,
 });

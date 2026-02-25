@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { GlobalLoadingProvider } from "@/providers/GlobalLoadingProvider";
 import { AuthProvider } from "@/providers/AuthProvider";
+import { NuqsAdapter } from 'nuqs/adapters/next/app'
 import NextTopLoader from 'nextjs-toploader';
 import { Toaster } from "@/components/ui/sonner";
 
@@ -19,7 +20,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: {
     default: "LamBH",
-    template: "%s | Lambh.io.vn",
+    template: "%s",
   },
   description: "I build minimal, scalable interfaces and robust backends. Fullstack Engineer based in Ho Chi Minh City.",
   openGraph: {
@@ -50,7 +51,9 @@ export default function RootLayout({
         <NextTopLoader showSpinner={false} />
         <AuthProvider>
           <GlobalLoadingProvider>
-            {children}
+            <NuqsAdapter>
+              {children}
+            </NuqsAdapter>
           </GlobalLoadingProvider>
         </AuthProvider>
         <Toaster richColors position="top-right" />

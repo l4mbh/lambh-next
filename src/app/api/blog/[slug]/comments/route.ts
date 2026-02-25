@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { db } from "@/backend/db";
 import { auth } from "@/backend/auth";
+import { checkRateLimit, limiters } from "@/lib/rate-limit";
+import { headers } from "next/headers";
 
 export async function GET(req: Request, { params }: { params: Promise<{ slug: string }> }) {
     try {
@@ -55,16 +57,27 @@ export async function GET(req: Request, { params }: { params: Promise<{ slug: st
 
 export async function POST(req: Request, { params }: { params: Promise<{ slug: string }> }) {
     try {
+        const headerList = await headers();
+        const ip = headerList.get("x-forwarded-for") ?? "127.0.0.1";
+
+        // Use the general 'auth' limiter for comments (5 requests per 60 seconds)
+        // Feel free to create a tighter one in rate-limit.ts if needed
+        const { success } = await checkRateLimit(ip, limiters.auth);
+
+        if (!success) {
+            return NextResponse.json({ error: "Hold on, you're commenting too fast!" }, { status: 429 });
+        }
+
         const session = await auth();
         if (!session?.user?.id && !session?.user?.email) {
-            return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+            return NextResponse.json({ error: "Please login to comment" }, { status: 401 });
         }
 
         const slug = (await params).slug;
         const { content } = await req.json();
 
         if (!content || typeof content !== "string" || content.trim() === "") {
-            return NextResponse.json({ error: "Content is required" }, { status: 400 });
+            return NextResponse.json({ error: "You can't just say nothing" }, { status: 400 });
         }
 
         const blogPost = await db.blogPost.findUnique({
@@ -73,7 +86,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ slug: s
         });
 
         if (!blogPost) {
-            return NextResponse.json({ error: "Blog post not found" }, { status: 404 });
+            return NextResponse.json({ error: "Look like this post is gone" }, { status: 404 });
         }
 
         const userIdentifier = session.user.id ? { id: session.user.id } : { email: session.user.email as string };
@@ -107,6 +120,6 @@ export async function POST(req: Request, { params }: { params: Promise<{ slug: s
         return NextResponse.json(newComment, { status: 201 });
     } catch (error) {
         console.error("Error creating comment:", error);
-        return NextResponse.json({ error: "Failed to create comment" }, { status: 500 });
+        return NextResponse.json({ error: "Error, try again later" }, { status: 500 });
     }
 }

@@ -40,7 +40,7 @@ export function BlogTable({ initialBlogs }: BlogTableProps) {
             toast.success(`Synced ${result.count} blog posts from Notion`)
 
             // Refresh the list
-            const updated = await getBlogs()
+            const { posts: updated } = await getBlogs({ limit: 1000, publishedOnly: false })
             setBlogs(updated)
         })
     }

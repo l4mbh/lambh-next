@@ -44,15 +44,15 @@ export function BlogItem({ blog }: BlogItemProps) {
     return (
         <Card className="flex flex-col bg-black h-full overflow-hidden transition-all hover:shadow-md hover:border-primary/50 group">
             {blog.coverImage ? (
-                <div className="relative w-full h-48 overflow-hidden bg-muted">
+                <div className="relative rounded-lg !w-[95%] mx-auto mt-2 h-48 overflow-hidden bg-muted">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                         src={imageUrl}
                         alt={blog.title}
-                        className="object-cover w-full h-full transition-transform duration-300 group-hover:scale-105"
+                        className="object-cover rounded-lg w-full h-full transition-transform duration-300 group-hover:scale-105"
                     />
                 </div>
-            ) : <div className="relative w-full h-48 overflow-hidden bg-black rounded-lg ">
+            ) : <div className="relative flex items-center justify-center w-[95%] mx-auto mt-2 h-48 overflow-hidden bg-black rounded-lg ">
                 <div className="flex items-center justify-center w-full h-full">
                     <span className="text-white text-2xl font-bold letter-spacing-5 space-x-2">POST</span>
                 </div>
@@ -63,16 +63,22 @@ export function BlogItem({ blog }: BlogItemProps) {
                 <div className="flex items-center justify-between h-5">
                     <div className="flex gap-2 overflow-hidden mr-2">
                         {blog.tags.map((tag: string) => (
-                            <Badge key={tag} variant="secondary" className="px-1.5 py-0 whitespace-nowrap">
-                                {tag}
-                            </Badge>
+                            <Link key={tag} href={`/blog?tag=${encodeURIComponent(tag)}`} className="hover:opacity-80 transition-opacity">
+                                <Badge variant="secondary" className="px-1.5 py-0 whitespace-nowrap cursor-pointer">
+                                    {tag}
+                                </Badge>
+                            </Link>
                         ))}
                     </div>
-                    <span className="text-xs text-muted-foreground whitespace-nowrap">
+                    {/* Add clicking the date filters from that date to today */}
+                    <Link
+                        href={`/blog?from=${(blog.publishedAt || blog.createdAt).toISOString()}`}
+                        className="text-xs text-muted-foreground whitespace-nowrap hover:text-primary transition-colors cursor-pointer"
+                    >
                         {blog.publishedAt
                             ? format(new Date(blog.publishedAt), 'MMM dd, yyyy')
                             : format(new Date(blog.createdAt), 'MMM dd, yyyy')}
-                    </span>
+                    </Link>
                 </div>
 
                 {/* Line 2: Title */}

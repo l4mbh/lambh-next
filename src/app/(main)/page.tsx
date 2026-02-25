@@ -8,8 +8,8 @@ import { ContactSection } from "@/components/features/home/contact-section";
 import { Alert } from "@/components/ui/alert";
 
 export default async function Home() {
-  const allBlogs = await getBlogs();
-  const recentBlogs = allBlogs.filter((b: BlogPost) => b.published).slice(0, 3);
+  const { posts } = await getBlogs();
+  const recentBlogs = posts.filter((b: BlogPost) => b.published).slice(0, 3);
 
   return (
     <div
@@ -106,7 +106,7 @@ export default async function Home() {
             </div>
 
             <div className="flex flex-col sm:flex-row items-center gap-6 mt-8 md:mt-0 shrink-0">
-              <Link href="/portfolio">
+              {/* <Link href="/portfolio">
                 <Button
                   variant="outline"
                   className="border-border hover:bg-foreground hover:text-background transition-colors px-6 h-10 rounded-sm text-xs uppercase tracking-wider"
@@ -115,7 +115,7 @@ export default async function Home() {
                 >
                   More about me
                 </Button>
-              </Link>
+              </Link> */}
               <a href="#contact" className="group flex items-center gap-4 text-sm font-medium uppercase tracking-widest hover:text-primary transition-colors">
                 <span className="w-12 h-[1px] bg-foreground group-hover:bg-primary transition-colors" />
                 Contact me
