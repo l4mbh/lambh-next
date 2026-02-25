@@ -4,7 +4,12 @@ import { PrismaPg } from '@prisma/adapter-pg'
 import { env } from '@/lib/env'
 
 const prismaClientSingleton = () => {
-    const pool = new Pool({ connectionString: env.DATABASE_URL })
+    // Configure pg Pool with a max size to prevent reaching Supabase Session mode limits
+    const pool = new Pool({
+        connectionString: env.DATABASE_URL,
+        max: 10, // Limit connections to database
+        idleTimeoutMillis: 30000,
+    })
     const adapter = new PrismaPg(pool)
     return new PrismaClient({ adapter })
 }
