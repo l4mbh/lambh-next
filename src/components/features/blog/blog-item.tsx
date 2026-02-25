@@ -6,6 +6,12 @@ import { Badge } from "@/components/ui/badge";
 import { format } from "date-fns";
 import { Separator } from "@/components/ui/separator";
 import { Button } from '@/components/ui/button';
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 interface BlogItemProps {
     blog: BlogPost;
@@ -60,20 +66,40 @@ export function BlogItem({ blog }: BlogItemProps) {
             <Separator />
             <CardHeader className="flex-grow p-4 gap-y-2">
                 {/* Line 1: Tags & Date */}
-                <div className="flex items-center justify-between h-5">
+                <div className="flex items-center justify-between h-5 w-full">
                     <div className="flex gap-2 overflow-hidden mr-2">
-                        {blog.tags.map((tag: string) => (
-                            <Link key={tag} href={`/blog?tag=${encodeURIComponent(tag)}`} className="hover:opacity-80 transition-opacity">
+                        {blog.tags.slice(0, 2).map((tag: string) => (
+                            <Link key={tag} href={`/blog?tag=${encodeURIComponent(tag)}`} className="hover:opacity-80 transition-opacity shrink-0">
                                 <Badge variant="secondary" className="px-1.5 py-0 whitespace-nowrap cursor-pointer">
                                     {tag}
                                 </Badge>
                             </Link>
                         ))}
+                        {blog.tags.length > 2 && (
+                            <DropdownMenu>
+                                <DropdownMenuTrigger asChild>
+                                    <Badge variant="secondary" className="px-1.5 py-0 whitespace-nowrap shrink-0 cursor-pointer">
+                                        +{blog.tags.length - 2}
+                                    </Badge>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent align="end" className="max-w-[200px] z-50 p-2 flex flex-wrap gap-1.5">
+                                    {blog.tags.slice(2).map((tag: string) => (
+                                        <DropdownMenuItem key={tag} asChild className="p-0 cursor-pointer focus:bg-transparent inline-flex shrink-0">
+                                            <Link href={`/blog?tag=${encodeURIComponent(tag)}`}>
+                                                <Badge variant="secondary" className="px-2 py-0.5 justify-center text-xs font-normal cursor-pointer hover:bg-secondary/80">
+                                                    {tag}
+                                                </Badge>
+                                            </Link>
+                                        </DropdownMenuItem>
+                                    ))}
+                                </DropdownMenuContent>
+                            </DropdownMenu>
+                        )}
                     </div>
                     {/* Add clicking the date filters from that date to today */}
                     <Link
                         href={`/blog?from=${(blog.publishedAt || blog.createdAt).toISOString()}`}
-                        className="text-xs text-muted-foreground whitespace-nowrap hover:text-primary transition-colors cursor-pointer"
+                        className="text-xs text-muted-foreground whitespace-nowrap hover:text-primary transition-colors cursor-pointer shrink-0"
                     >
                         {blog.publishedAt
                             ? format(new Date(blog.publishedAt), 'MMM dd, yyyy')
@@ -83,18 +109,18 @@ export function BlogItem({ blog }: BlogItemProps) {
 
                 {/* Line 2: Title */}
                 <CardTitle
-                    className="text-lg leading-tight line-clamp-1 h-6"
+                    className="text-lg leading-tight truncate h-6 w-full block"
                     title={blog.title}
                 >
-                    <Link href={`/blog/${blog.slug}`} className="hover:text-primary transition-colors">
+                    <Link href={`/blog/${blog.slug}`} className="hover:text-primary transition-colors block w-full truncate">
                         {blog.title}
                     </Link>
                 </CardTitle>
 
                 {/* Lines 3 & 4: Description (2 lines max) */}
-                <div className="h-10">
+                <div className="h-10 w-full overflow-hidden">
                     <CardDescription
-                        className="line-clamp-2 text-sm text-muted-foreground leading-snug"
+                        className="line-clamp-2 overflow-hidden text-sm text-muted-foreground leading-snug text-ellipsis"
                         title={blog.description || "No description provided."}
                     >
                         {blog.description || <span className="invisible">No description provided.</span>}
