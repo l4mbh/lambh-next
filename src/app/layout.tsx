@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { GlobalLoadingProvider } from "@/providers/GlobalLoadingProvider";
+import { AuthProvider } from "@/providers/AuthProvider";
 import NextTopLoader from 'nextjs-toploader';
 import { Toaster } from "@/components/ui/sonner";
 
@@ -47,9 +48,11 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-background text-foreground dark:bg-black dark:text-white`}
       >
         <NextTopLoader showSpinner={false} />
-        <GlobalLoadingProvider>
-          {children}
-        </GlobalLoadingProvider>
+        <AuthProvider>
+          <GlobalLoadingProvider>
+            {children}
+          </GlobalLoadingProvider>
+        </AuthProvider>
         <Toaster richColors position="top-right" />
       </body>
     </html>

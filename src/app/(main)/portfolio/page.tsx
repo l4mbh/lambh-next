@@ -1,11 +1,27 @@
 "use client";
 
+import { useState, useEffect } from "react";
+
 import { portfolioData } from "@/data/portfolio";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
-import { ArrowLeftRight, ArrowUpRight, Printer } from "lucide-react";
+import { ArrowLeftRight, ArrowUpRight, Printer, Download } from "lucide-react";
 export default function PortfolioPage() {
+    const [isScrolled, setIsScrolled] = useState(false);
+
+    useEffect(() => {
+        const handleScroll = () => {
+            setIsScrolled(window.scrollY > 300);
+        };
+
+        window.addEventListener("scroll", handleScroll);
+        // Initial check
+        handleScroll();
+
+        return () => window.removeEventListener("scroll", handleScroll);
+    }, []);
+
     return (
         <div className="container mx-auto p-6 md:p-12 lg:p-16 max-w-4xl space-y-24 animate-in fade-in duration-700 print:p-0 print:py-8 print:space-y-12 max-w-[850px]">
             {/* Header Section */}
@@ -15,8 +31,7 @@ export default function PortfolioPage() {
                         <h1 className="text-5xl md:text-7xl font-black tracking-tighter mb-4">{portfolioData.personal.name}</h1>
                         <p className="text-xl md:text-2xl text-muted-foreground font-light">{portfolioData.personal.role}</p>
                     </div>
-                    <Button variant="outline" onClick={() => window.print()} className="print:hidden w-full sm:w-auto shrink-0">
-                        <Printer className="mr-2 h-4 w-4" />
+                    <Button variant="outline" size="sm" iconPlacement="left" icon={<Printer className="h-4 w-4" />} onClick={() => window.print()} className="print:hidden w-full sm:w-auto shrink-0">
                         Save as PDF
                     </Button>
                 </div>
@@ -111,8 +126,8 @@ export default function PortfolioPage() {
                                 {activity.data && (
                                     <div className="mt-4">
                                         <a href={activity.data} target="_blank" rel="noopener noreferrer" className="print:hidden">
-                                            <Button variant="outline" size="sm">
-                                                View <ArrowUpRight className="ml-2 h-4 w-4" />
+                                            <Button size="sm" variant="outline" iconPlacement="right" icon={<ArrowUpRight className="h-4 w-4" />}>
+                                                View
                                             </Button>
                                         </a>
                                         <a href={activity.data} target="_blank" rel="noopener noreferrer" className="hidden print:block text-sm text-primary hover:underline mt-1 break-all">
@@ -159,6 +174,19 @@ export default function PortfolioPage() {
                     </div>
                 </div>
             </section>
+
+            {/* Floating Save as PDF Button */}
+            {isScrolled && (
+                <Button
+                    variant="outline"
+                    onClick={() => window.print()}
+                    className="fixed !text-center bottom-6 right-[4.75rem] md:bottom-24 md:right-[6.5rem] z-50 h-[44px] px-4 shadow-lg transition-all duration-300 animate-in fade-in zoom-in group print:hidden bg-background"
+                    aria-label="Save as PDF"
+                >
+                    <Download className="h-5 w-5 group-hover:-translate-y-1 transition-transform duration-300" />
+                    <span className="font-medium">PDF</span>
+                </Button>
+            )}
         </div>
     );
 }

@@ -1,6 +1,7 @@
 import { getBlogBySlug } from "@/backend/actions/blog";
 import { NotionPageRenderer } from "@/components/features/blog/notion-page-renderer";
 import { BreadcrumbTitleUpdater } from "@/components/features/blog/breadcrumb-title-updater";
+import { BlogComments } from "@/components/features/blog/blog-comments";
 import { notFound } from "next/navigation";
 import { format } from "date-fns";
 
@@ -119,6 +120,8 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             <div className="mt-12 notion-wrapper">
                 <NotionPageRenderer recordMap={recordMap} />
             </div>
+
+            <BlogComments slug={slug} />
         </article>
     );
 }

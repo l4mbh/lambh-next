@@ -12,9 +12,9 @@ export default async function BlogPage() {
         <div className="container mx-auto p-4 lg:p-8 space-y-8 max-w-7xl">
             <div className="flex flex-col items-start gap-4 md:flex-row md:justify-between md:items-center">
                 <div>
-                    <h1 className="text-3xl font-bold tracking-tight">Our Blog</h1>
+                    <h1 className="text-3xl font-bold tracking-tight">Here i share what i think</h1>
                     <p className="text-muted-foreground mt-2">
-                        Read the latest news, updates, and articles.
+                        I share my thoughts about technology, life, and everything in between.
                     </p>
                 </div>
             </div>

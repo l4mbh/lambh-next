@@ -5,6 +5,7 @@ import Link from "next/link";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 import type { BlogPost } from "@prisma/client";
 import { ContactSection } from "@/components/features/home/contact-section";
+import { Alert } from "@/components/ui/alert";
 
 export default async function Home() {
   const allBlogs = await getBlogs();
@@ -37,6 +38,18 @@ export default async function Home() {
               minimalism is not about having less, it's about making room for more of what matters
             </p>
           </div>
+          <Alert title="Note" variant="info" className="w-full max-w-4xl flex items-center gap-2">
+            {/*  */}
+            <span className="h-3 w-3 rounded-full bg-green-500 animate-pulse" />
+            I am looking for a job. Please contact me if you have any opportunities.
+            <Button variant="ghost" className="ml-auto" asChild>
+              <Link href="#contact">Contact me</Link>
+            </Button>
+            /
+            <Button variant="ghost" className="ml-auto" asChild>
+              <Link href="/portfolio">View my resume</Link>
+            </Button>
+          </Alert>
 
 
           <div className="flex flex-col lg:flex-row items-start lg:items-end justify-between gap-12 mt-12 md:mt-24">
