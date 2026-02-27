@@ -17,6 +17,8 @@ import { loginAction } from "@/backend/actions/auth"
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { Loader2 } from "lucide-react"
+import { signIn } from "next-auth/react"
+import { GoogleIcon } from "./icon/google-icon"
 
 const loginSchema = z.object({
     email: z.string().email(),
@@ -107,7 +109,29 @@ export function LoginForm() {
                 >
                     Proceed
                 </Button>
+
+                <div className="relative mt-6 mb-6">
+                    <div className="absolute inset-0 flex items-center">
+                        <span className="w-full border-t border-zinc-800" />
+                    </div>
+                    <div className="relative flex justify-center text-xs uppercase">
+                        <span className="bg-black px-2 text-zinc-500 font-mono tracking-widest">
+                            Or continue with
+                        </span>
+                    </div>
+                </div>
+
+                <Button
+                    type="button"
+                    variant="outline"
+                    className="w-full border-zinc-800 hover:bg-zinc-900 hover:text-white"
+                    onClick={() => signIn("google", { callbackUrl: "/" })}
+                >
+                    <GoogleIcon className="mr-2 h-4 w-4" />
+                    Google
+                </Button>
             </form>
         </Form>
     )
 }
+
