@@ -126,8 +126,9 @@ export function LoginForm() {
                     variant="outline"
                     className="w-full border-zinc-800 hover:bg-zinc-900 hover:text-white"
                     onClick={() => signIn("google", { callbackUrl: "/" })}
+                    icon={<GoogleIcon className="mr-2 h-4 w-4" />}
+                    iconPlacement="left"
                 >
-                    <GoogleIcon className="mr-2 h-4 w-4" />
                     Google
                 </Button>
             </form>
